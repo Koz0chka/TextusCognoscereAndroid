@@ -1,40 +1,19 @@
 package com.asaleksandrov.textuscognoscereandroid;
 
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.camera.core.AspectRatio;
-import androidx.camera.core.Camera;
-import androidx.camera.core.CameraSelector;
-import androidx.camera.core.ImageCapture;
-import androidx.camera.core.ImageCaptureException;
-import androidx.camera.core.Preview;
-import androidx.camera.lifecycle.ProcessCameraProvider;
-import androidx.camera.view.PreviewView;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import com.google.common.util.concurrent.ListenableFuture;
-
-import java.io.File;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Executors;
-
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-
-import android.os.Bundle;
-import android.widget.ImageButton;
+import androidx.camera.core.CameraSelector;
+import androidx.camera.view.PreviewView;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 public class MainActivity extends AppCompatActivity {
     private static final int CAMERA_PERMISSION_CODE = 100;
@@ -51,7 +30,6 @@ public class MainActivity extends AppCompatActivity {
         PreviewView previewView = findViewById(R.id.cameraPreview);
         ImageButton capture = findViewById(R.id.capture);
         ImageButton toggleFlash = findViewById(R.id.toggleFlash);
-
         FrameLayout frameLayout = findViewById(R.id.frameLayout);
         DragResizeView dragResizeView = new DragResizeView(this);
         frameLayout.addView(dragResizeView);

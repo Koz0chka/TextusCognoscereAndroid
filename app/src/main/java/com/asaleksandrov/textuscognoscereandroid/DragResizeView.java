@@ -9,7 +9,6 @@ import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 

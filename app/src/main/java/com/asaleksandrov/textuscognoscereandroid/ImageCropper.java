@@ -1,15 +1,14 @@
 package com.asaleksandrov.textuscognoscereandroid;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.RectF;
+import android.util.Log;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import android.content.Context;
-import android.util.Log;
-import android.widget.Toast;
 
 public class ImageCropper {
     private final Bitmap bitmap;
@@ -47,6 +46,9 @@ public class ImageCropper {
         // Calculate the x and y position of the rectangle on the bitmap
         int x = (int) rect.left;
         int y = (int) rect.top;
+
+        // Log values
+        Log.d("Rectangle Info", "Width: " + width + ", Height: " + height + ", X: " + x + ", Y: " + y);
 
         // Create the cropped bitmap
         Bitmap croppedBitmap = Bitmap.createBitmap(bitmap, x, y, width, height);
