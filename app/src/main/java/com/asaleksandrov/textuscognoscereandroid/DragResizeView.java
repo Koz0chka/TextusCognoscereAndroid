@@ -13,7 +13,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 
 public class DragResizeView extends View {
-    private RectF rect;
+    private static RectF rect;
     private Paint paint;
     private boolean dragging = false;
     private boolean scaling = false;
@@ -28,6 +28,10 @@ public class DragResizeView extends View {
     public DragResizeView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context);
+    }
+
+    public static RectF getRect() {
+        return rect;
     }
 
     private void init(Context context) {
@@ -54,7 +58,6 @@ public class DragResizeView extends View {
         // Paint the entire canvas with 50% black
         Paint dimPaint = new Paint();
         dimPaint.setColor(Color.argb(128, 0, 0, 0)); // 50% black
-        canvas.drawRect(0, 0, getWidth(), getHeight(), dimPaint);
 
         // Draw dimming rectangles around the frame
         // Top rectangle
@@ -84,6 +87,31 @@ public class DragResizeView extends View {
         // bottom right corner
         canvas.drawLine(rect.right, rect.bottom, rect.right - cornerLength, rect.bottom, paint);
         canvas.drawLine(rect.right, rect.bottom, rect.right, rect.bottom - cornerLength, paint);
+    }
+
+    private void updateRect() {
+        // Ensure the frame does not go off the screen
+        if (rect.left < 0) {
+            rect.left = 0;
+        }
+        if (rect.right > getWidth()) {
+            rect.right = getWidth();
+        }
+        if (rect.top < 0) {
+            rect.top = 0;
+        }
+        if (rect.bottom > getHeight()) {
+            rect.bottom = getHeight();
+        }
+
+        // Ensure the frame does not collapse into itself
+        int minSize = 200; // The minimum size of the frame in pixels
+        if (rect.right - rect.left < minSize) {
+            rect.right = rect.left + minSize;
+        }
+        if (rect.bottom - rect.top < minSize) {
+            rect.bottom = rect.top + minSize;
+        }
     }
 
     @Override
@@ -134,6 +162,8 @@ public class DragResizeView extends View {
                     } else {
                         rect.offset(dx, dy);
                     }
+
+                    updateRect();
 
                     // Center the rectangle
                     float newX = (getWidth() - rect.width()) / 2;
