@@ -3,6 +3,7 @@ package com.asaleksandrov.textuscognoscereandroid;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.RectF;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
@@ -77,6 +78,11 @@ public class CameraHandler {
     public void takePicture(ImageCapture imageCapture) {
         final File file = new File(context.getExternalFilesDir(null), "image_to_process.png");
         ImageCapture.OutputFileOptions outputFileOptions = new ImageCapture.OutputFileOptions.Builder(file).build();
+
+//        RectF rect = DragResizeView.getRect(); // get the rect from DragResizeView
+//        ImageCropper imageCropper = new ImageCropper(file.toString(), context);
+//        imageCropper.cropAndSave(rect);
+
         imageCapture.takePicture(outputFileOptions, Executors.newCachedThreadPool(), new ImageCapture.OnImageSavedCallback() {
             @Override
             public void onImageSaved(@NonNull ImageCapture.OutputFileResults outputFileResults) {
@@ -86,6 +92,11 @@ public class CameraHandler {
 //                        Toast.makeText(MainActivity.this, "Image saved at: " + file.getPath(), Toast.LENGTH_SHORT).show();
 //                    }
 //                });
+
+                RectF rect = DragResizeView.getRect(); // get the rect from DragResizeView
+                ImageCropper imageCropper = new ImageCropper(file.toString(), context);
+                imageCropper.cropAndSave(rect);
+
                 startCamera(cameraFacing);
             }
 

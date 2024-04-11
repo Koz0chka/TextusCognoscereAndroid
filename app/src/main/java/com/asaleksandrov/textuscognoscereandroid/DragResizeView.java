@@ -9,6 +9,7 @@ import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -159,6 +160,7 @@ public class DragResizeView extends View {
                             rect.bottom -= 5;
                             rect.top += 5;
                         }
+                        //Toast.makeText(this.getContext(), "Left: " + rect.left + ", Top: " + rect.top + ", Right: " + rect.right + ", Bottom: " + rect.bottom, Toast.LENGTH_LONG).show();
                     } else {
                         rect.offset(dx, dy);
                     }
