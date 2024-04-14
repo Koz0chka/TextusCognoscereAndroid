@@ -6,6 +6,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.RectF;
 import android.util.Log;
 
+import androidx.camera.view.PreviewView;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -13,10 +15,18 @@ import java.io.IOException;
 public class ImageCropper {
     private final Bitmap bitmap;
     private final Context context;
+    private final PreviewView previewView;
 
-    public ImageCropper(String imagePath, Context context) {
+    public ImageCropper(String imagePath, Context context, PreviewView previewView) { // и это
         this.context = context;
-        this.bitmap = BitmapFactory.decodeFile(imagePath);
+        this.previewView = previewView;
+
+        Bitmap originalBitmap = BitmapFactory.decodeFile(imagePath);
+        // Вычисление коэффициентов масштабирования
+        float scaleX = (float) previewView.getMeasuredWidth() / originalBitmap.getWidth();
+        float scaleY = (float) previewView.getMeasuredHeight() / originalBitmap.getHeight();
+        // Создание нового Bitmap с требуемым размером
+        this.bitmap = Bitmap.createScaledBitmap(originalBitmap, (int)(originalBitmap.getWidth() * scaleX), (int)(originalBitmap.getHeight() * scaleY), true);
 
         if (this.bitmap == null) {
             Log.d("ImageCropper", "Failed to load image");
@@ -25,35 +35,22 @@ public class ImageCropper {
 
     public void cropAndSave(RectF rect) {
 
-        // Ensure the rect does not go outside the bitmap
-        if (rect.left < 0) {
-            rect.left = 0;
-        }
-        if (rect.right > bitmap.getWidth()) {
-            rect.right = bitmap.getWidth();
-        }
-        if (rect.top < 0) {
-            rect.top = 0;
-        }
-        if (rect.bottom > bitmap.getHeight()) {
-            rect.bottom = bitmap.getHeight();
-        }
-
-        // Calculate the width and height of the rectangle
-        int width = (int) (rect.right - rect.left);
-        int height = (int) (rect.bottom - rect.top);
-
-        // Calculate the x and y position of the rectangle on the bitmap
+        // Определение размеров и положения прямоугольника в Bitmap
+        int width = (int) rect.width();
+        int height = (int) rect.height();
         int x = (int) rect.left;
         int y = (int) rect.top;
 
-        // Log values
-        Log.d("Rectangle Info", "Width: " + width + ", Height: " + height + ", X: " + x + ", Y: " + y);
+        // Убедитесь, что прямоугольник не выходит за пределы Bitmap
+        if (x < 0 || y < 0 || x + width > bitmap.getWidth() || y + height > bitmap.getHeight()) {
+            Log.d("ImageCropper", "Rectangle goes outside the bitmap bounds");
+            return;
+        }
 
-        // Create the cropped bitmap
+        // Создайте обрезанный Bitmap
         Bitmap croppedBitmap = Bitmap.createBitmap(bitmap, x, y, width, height);
 
-        // Save the cropped bitmap
+        // Save the cropped Bitmap
         try {
             File file = new File(context.getExternalFilesDir(null), "CROPPED.jpg");
             FileOutputStream outStream = new FileOutputStream(file);

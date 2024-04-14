@@ -90,7 +90,7 @@ public class CameraHandler {
 //                });
 
                 RectF rect = DragResizeView.getRect(); // get the rect from DragResizeView
-                ImageCropper imageCropper = new ImageCropper(file.toString(), context);
+                ImageCropper imageCropper = new ImageCropper(file.toString(), context, previewView);
                 imageCropper.cropAndSave(rect);
 
                 startCamera(cameraFacing);
