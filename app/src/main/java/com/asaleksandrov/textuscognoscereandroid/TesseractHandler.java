@@ -5,6 +5,7 @@ import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
+
 import com.googlecode.tesseract.android.TessBaseAPI;
 
 import java.io.File;
@@ -19,7 +20,7 @@ public class TesseractHandler {
 
     public TesseractHandler(String language, Context context) {
         this.context = context;
-        mTess = new TessBaseAPI();
+        mTess = new TessBaseAPI(); // Используем поле класса здесь
         copyAssets();
         String datapath = this.context.getFilesDir() + "/tesseract/";
         mTess.init(datapath, language);

@@ -10,8 +10,11 @@ appcompat = "1.6.1"
 material = "1.11.0"
 activity = "1.8.0"
 constraintlayout = "2.1.4"
+tesseract4android = "4.7.0"
+tesseract4androidOpenmp = "4.7.0"
 
 [libraries]
+cz-tesseract4android-openmp = { module = "cz.adaptech.tesseract4android:tesseract4android-openmp", version.ref = "tesseract4androidOpenmp" }
 gradle = { module = "com.android.tools.build:gradle", version.ref = "gradle" }
 gradle-v1501 = { module = "com.chaquo.python:gradle", version.ref = "chaquoGradle" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -22,6 +25,7 @@ material = { group = "com.google.android.material", name = "material", version.r
 activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 python-gradle = { module = "com.chaquo.python:gradle", version.ref = "gradleVersion" }
+tesseract4android = { group = "cz.adaptech.tesseract4android", name = "tesseract4android", version.ref = "tesseract4android" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

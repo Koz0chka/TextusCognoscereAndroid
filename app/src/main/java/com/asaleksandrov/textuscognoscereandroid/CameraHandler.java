@@ -2,6 +2,7 @@ package com.asaleksandrov.textuscognoscereandroid;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.RectF;
 import android.util.Log;
@@ -105,7 +106,15 @@ public class CameraHandler {
                     String language = "eng+rus";
                     mTesseractHandler = new TesseractHandler(language, context);
                     String result = mTesseractHandler.processImage(filePath);
+
                     Log.e("result_text", result);
+
+                    // Создайте Intent для новой активности
+                    Intent intent = new Intent(context, TextDisplayActivity.class);
+                    // Поместите текст в "extras" Intent
+                    intent.putExtra("text", result);
+                    // Начните новую активность
+                    context.startActivity(intent);
                 } else {
                     Toast.makeText(context, "File does not exist", Toast.LENGTH_SHORT).show();
                 }
