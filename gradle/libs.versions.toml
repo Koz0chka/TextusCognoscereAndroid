@@ -1,6 +1,8 @@
 [versions]
 agp = "8.3.0"
+cameraExtensions = "1.2.2"
 chaquoGradle = "15.0.1"
+constraintlayoutVersion = "2.0.4"
 gradle = "3.5.4"
 gradleVersion = "9.2.0"
 junit = "4.13.2"
@@ -14,6 +16,13 @@ tesseract4android = "4.7.0"
 tesseract4androidOpenmp = "4.7.0"
 
 [libraries]
+androidx-camera-camera2 = { module = "androidx.camera:camera-camera2", version.ref = "cameraExtensions" }
+androidx-camera-core = { module = "androidx.camera:camera-core", version.ref = "cameraExtensions" }
+androidx-camera-lifecycle = { module = "androidx.camera:camera-lifecycle", version.ref = "cameraExtensions" }
+androidx-camera-video = { module = "androidx.camera:camera-video", version.ref = "cameraExtensions" }
+androidx-camera-view = { module = "androidx.camera:camera-view", version.ref = "cameraExtensions" }
+camera-extensions = { module = "androidx.camera:camera-extensions", version.ref = "cameraExtensions" }
+constraintlayout-v204 = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintlayoutVersion" }
 cz-tesseract4android-openmp = { module = "cz.adaptech.tesseract4android:tesseract4android-openmp", version.ref = "tesseract4androidOpenmp" }
 gradle = { module = "com.android.tools.build:gradle", version.ref = "gradle" }
 gradle-v1501 = { module = "com.chaquo.python:gradle", version.ref = "chaquoGradle" }
