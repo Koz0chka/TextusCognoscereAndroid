@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.RectF;
+import android.util.Log;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -30,6 +31,7 @@ public class CameraHandler {
     private final PreviewView previewView;
     private final ImageButton capture, toggleFlash;
     private final int cameraFacing = CameraSelector.LENS_FACING_BACK;
+    private TesseractHandler mTesseractHandler;
 
     public CameraHandler(Context context, PreviewView previewView, ImageButton capture, ImageButton toggleFlash) {
         this.context = context;
@@ -74,6 +76,8 @@ public class CameraHandler {
     public void takePicture(ImageCapture imageCapture) {
         final File file = new File(context.getExternalFilesDir(null), "image_to_process.png");
         ImageCapture.OutputFileOptions outputFileOptions = new ImageCapture.OutputFileOptions.Builder(file).build();
+        String filePath = file.getAbsolutePath();
+        Log.d("MyApp", "File path: " + filePath);
 
 //        RectF rect = DragResizeView.getRect(); // get the rect from DragResizeView
 //        ImageCropper imageCropper = new ImageCropper(file.toString(), context);
@@ -94,6 +98,17 @@ public class CameraHandler {
                 imageCropper.cropAndSave(rect);
 
                 startCamera(cameraFacing);
+
+                File croppedFile = new File(context.getExternalFilesDir(null), "CROPPED.png");
+                if (croppedFile.exists()) {
+                    String filePath = croppedFile.getAbsolutePath();
+                    String language = "eng+rus";
+                    mTesseractHandler = new TesseractHandler(language, context);
+                    String result = mTesseractHandler.processImage(filePath);
+                    Log.e("result_text", result);
+                } else {
+                    Toast.makeText(context, "File does not exist", Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override

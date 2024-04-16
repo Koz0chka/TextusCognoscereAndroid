@@ -15,11 +15,9 @@ import java.io.IOException;
 public class ImageCropper {
     private final Bitmap bitmap;
     private final Context context;
-    private final PreviewView previewView;
 
-    public ImageCropper(String imagePath, Context context, PreviewView previewView) { // и это
+    public ImageCropper(String imagePath, Context context, PreviewView previewView) {
         this.context = context;
-        this.previewView = previewView;
 
         Bitmap originalBitmap = BitmapFactory.decodeFile(imagePath);
         // Вычисление коэффициентов масштабирования
@@ -27,10 +25,6 @@ public class ImageCropper {
         float scaleY = (float) previewView.getMeasuredHeight() / originalBitmap.getHeight();
         // Создание нового Bitmap с требуемым размером
         this.bitmap = Bitmap.createScaledBitmap(originalBitmap, (int)(originalBitmap.getWidth() * scaleX), (int)(originalBitmap.getHeight() * scaleY), true);
-
-        if (this.bitmap == null) {
-            Log.d("ImageCropper", "Failed to load image");
-        }
     }
 
     public void cropAndSave(RectF rect) {
@@ -52,9 +46,9 @@ public class ImageCropper {
 
         // Save the cropped Bitmap
         try {
-            File file = new File(context.getExternalFilesDir(null), "CROPPED.jpg");
+            File file = new File(context.getExternalFilesDir(null), "CROPPED.png");
             FileOutputStream outStream = new FileOutputStream(file);
-            croppedBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
+            croppedBitmap.compress(Bitmap.CompressFormat.PNG, 100, outStream);
             outStream.flush();
             outStream.close();
         } catch (IOException e) {

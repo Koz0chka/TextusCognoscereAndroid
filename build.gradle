@@ -3,15 +3,12 @@ buildscript {
     repositories {
         google()
         mavenCentral()
-        maven { url "https://chaquo.com/maven" }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.5.4'
-        classpath "com.chaquo.python:gradle:15.0.1"
     }
 }
 
 plugins {
 alias(libs.plugins.androidApplication) apply false
-    id("com.chaquo.python") version "15.0.1" apply false
 }
