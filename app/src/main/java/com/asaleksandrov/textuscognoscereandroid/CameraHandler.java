@@ -2,7 +2,6 @@ package com.asaleksandrov.textuscognoscereandroid;
 
 import android.Manifest;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.RectF;
 import android.util.Log;
@@ -32,7 +31,6 @@ public class CameraHandler {
     private final PreviewView previewView;
     private final ImageButton capture, toggleFlash;
     private final int cameraFacing = CameraSelector.LENS_FACING_BACK;
-    private TesseractHandler mTesseractHandler;
 
     public CameraHandler(Context context, PreviewView previewView, ImageButton capture, ImageButton toggleFlash) {
         this.context = context;
@@ -100,24 +98,8 @@ public class CameraHandler {
 
                 startCamera(cameraFacing);
 
-                File croppedFile = new File(context.getExternalFilesDir(null), "CROPPED.png");
-                if (croppedFile.exists()) {
-                    String filePath = croppedFile.getAbsolutePath();
-                    String language = "eng+rus";
-                    mTesseractHandler = new TesseractHandler(language, context);
-                    String result = mTesseractHandler.processImage(filePath);
-
-                    Log.e("result_text", result);
-
-                    // Создайте Intent для новой активности
-                    Intent intent = new Intent(context, TextDisplayActivity.class);
-                    // Поместите текст в "extras" Intent
-                    intent.putExtra("text", result);
-                    // Начните новую активность
-                    context.startActivity(intent);
-                } else {
-                    Toast.makeText(context, "File does not exist", Toast.LENGTH_SHORT).show();
-                }
+                TesseractHandler mTesseractHandler = new TesseractHandler(Config.LANGUAGE, context);
+                mTesseractHandler.processCroppedImage();
             }
 
             @Override

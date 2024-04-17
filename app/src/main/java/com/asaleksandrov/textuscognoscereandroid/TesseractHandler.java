@@ -5,6 +5,7 @@ import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.googlecode.tesseract.android.TessBaseAPI;
 
@@ -26,6 +27,22 @@ public class TesseractHandler {
         mTess.init(datapath, language);
     }
 
+    public void processCroppedImage() {
+        File croppedFile = new File(context.getExternalFilesDir(null), "CROPPED.png");
+
+        if (croppedFile.exists()) {
+            String filePath = croppedFile.getAbsolutePath();
+            String result = processImage(filePath);
+
+            Log.e("result_text", result);
+
+            // Вызов функции startTextDisplayActivity
+            IntentHandler.startTextDisplayActivity(context, result);
+        } else {
+            Toast.makeText(context, "File does not exist", Toast.LENGTH_SHORT).show();
+        }
+    }
+
     public String processImage(String filePath) {
         // Преобразование файла в Bitmap
         BitmapFactory.Options options = new BitmapFactory.Options();
@@ -33,8 +50,7 @@ public class TesseractHandler {
         Bitmap bitmap = BitmapFactory.decodeFile(filePath, options);
 
         mTess.setImage(bitmap);
-        String result = mTess.getUTF8Text();
-        return result;
+        return mTess.getUTF8Text();
     }
 
     private void copyAssets() {
