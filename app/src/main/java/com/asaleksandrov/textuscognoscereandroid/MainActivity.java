@@ -5,6 +5,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -20,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
 
     private final int cameraFacing = CameraSelector.LENS_FACING_BACK;
     private CameraHandler cameraHandler;
+    private TesseractHandler tesseractHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,8 +36,10 @@ public class MainActivity extends AppCompatActivity {
         DragResizeView dragResizeView = new DragResizeView(this);
         frameLayout.addView(dragResizeView);
 
+        final ProgressBar progressBar = findViewById(R.id.progressBar);
+
         // Создаем экземпляр CameraHandler
-        cameraHandler = new CameraHandler(this, previewView, capture, toggleFlash);
+        cameraHandler = new CameraHandler(this, previewView, capture, toggleFlash, progressBar);
 
         // Проверяем разрешение на использование камеры
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {

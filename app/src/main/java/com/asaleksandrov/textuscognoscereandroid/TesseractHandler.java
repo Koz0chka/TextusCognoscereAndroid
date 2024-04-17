@@ -5,6 +5,7 @@ import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.googlecode.tesseract.android.TessBaseAPI;
@@ -18,9 +19,11 @@ import java.io.OutputStream;
 public class TesseractHandler {
     private final Context context;
     private final TessBaseAPI mTess;
+    private final ProgressBar progressBar;
 
-    public TesseractHandler(String language, Context context) {
+    public TesseractHandler(String language, Context context, ProgressBar progressBar) {
         this.context = context;
+        this.progressBar = progressBar;
         mTess = new TessBaseAPI(); // Используем поле класса здесь
         copyAssets();
         String datapath = this.context.getFilesDir() + "/tesseract/";
@@ -31,13 +34,22 @@ public class TesseractHandler {
         File croppedFile = new File(context.getExternalFilesDir(null), "CROPPED.png");
 
         if (croppedFile.exists()) {
-            String filePath = croppedFile.getAbsolutePath();
-            String result = processImage(filePath);
+            final String filePath = croppedFile.getAbsolutePath();
 
-            Log.e("result_text", result);
+            AnimationUtils.processImageWithLoading(progressBar, new AnimationUtils.Callback() {
+                @Override
+                public String onProcessImage() {
+                    return processImage(filePath);
+                }
 
-            // Вызов функции startTextDisplayActivity
-            IntentHandler.startTextDisplayActivity(context, result);
+                @Override
+                public void onPostExecute(String result) {
+                    Log.e("result_text", result);
+
+                    // Вызов функции startTextDisplayActivity
+                    IntentHandler.startTextDisplayActivity(context, result);
+                }
+            });
         } else {
             Toast.makeText(context, "File does not exist", Toast.LENGTH_SHORT).show();
         }

@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.graphics.RectF;
 import android.util.Log;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -31,12 +32,14 @@ public class CameraHandler {
     private final PreviewView previewView;
     private final ImageButton capture, toggleFlash;
     private final int cameraFacing = CameraSelector.LENS_FACING_BACK;
+    private final ProgressBar progressBar;
 
-    public CameraHandler(Context context, PreviewView previewView, ImageButton capture, ImageButton toggleFlash) {
+    public CameraHandler(Context context, PreviewView previewView, ImageButton capture, ImageButton toggleFlash, ProgressBar progressBar) {
         this.context = context;
         this.previewView = previewView;
         this.capture = capture;
         this.toggleFlash = toggleFlash;
+        this.progressBar = progressBar;
     }
 
     public void startCamera(int cameraFacing) {
@@ -98,7 +101,7 @@ public class CameraHandler {
 
                 startCamera(cameraFacing);
 
-                TesseractHandler mTesseractHandler = new TesseractHandler(Config.LANGUAGE, context);
+                TesseractHandler mTesseractHandler = new TesseractHandler(Config.LANGUAGE, context, progressBar);
                 mTesseractHandler.processCroppedImage();
             }
 
