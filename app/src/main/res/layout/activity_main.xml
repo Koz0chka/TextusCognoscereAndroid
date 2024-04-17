@@ -10,7 +10,8 @@
     <androidx.camera.view.PreviewView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/cameraPreview"/>
+        android:id="@+id/cameraPreview">
+    </androidx.camera.view.PreviewView>
 
     <FrameLayout
         android:id="@+id/frameLayout"
@@ -19,13 +20,13 @@
     </FrameLayout>
 
     <ImageButton
-        android:layout_width="60sp"
-        android:layout_height="60sp"
+        android:layout_width="80sp"
+        android:layout_height="80sp"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="40sp"
         android:id="@+id/capture"
-        android:src="@drawable/round_camera_24"
+        android:src="@drawable/baseline_do_not_disturb_on_total_silence_24"
         android:scaleType="centerCrop"
         android:background="?attr/selectableItemBackgroundBorderless"
         app:tint="#fff" />
@@ -33,8 +34,9 @@
     <ImageButton
         android:layout_width="40sp"
         android:layout_height="40sp"
-        android:layout_alignParentEnd="true"
-        android:layout_margin="10sp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="60sp"
+        android:layout_marginHorizontal="60sp"
         android:src="@drawable/baseline_flash_on_24"
         app:tint="#fff"
         android:id="@+id/toggleFlash"
@@ -46,4 +48,17 @@
         android:layout_height="wrap_content"
         android:indeterminate="true"
         android:visibility="gone" />
+
+    <ImageButton
+        android:layout_width="40sp"
+        android:layout_height="40sp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="60sp"
+        android:layout_marginHorizontal="260sp"
+        android:id="@+id/btn_fullscreen"
+        android:src="@drawable/baseline_border_all_24"
+        android:scaleType="centerCrop"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        app:tint="#fff" />
+
 </RelativeLayout>

@@ -44,7 +44,32 @@ public class TesseractHandler {
 
                 @Override
                 public void onPostExecute(String result) {
-                    Log.e("result_text", result);
+                    //Log.e("result_text", result);
+
+                    // Вызов функции startTextDisplayActivity
+                    IntentHandler.startTextDisplayActivity(context, result);
+                }
+            });
+        } else {
+            Toast.makeText(context, "File does not exist", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void processFullImage() {
+        File croppedFile = new File(context.getExternalFilesDir(null), "image_to_process.png");
+
+        if (croppedFile.exists()) {
+            final String filePath = croppedFile.getAbsolutePath();
+
+            AnimationUtils.processImageWithLoading(progressBar, new AnimationUtils.Callback() {
+                @Override
+                public String onProcessImage() {
+                    return processImage(filePath);
+                }
+
+                @Override
+                public void onPostExecute(String result) {
+                    //Log.e("result_text", result);
 
                     // Вызов функции startTextDisplayActivity
                     IntentHandler.startTextDisplayActivity(context, result);

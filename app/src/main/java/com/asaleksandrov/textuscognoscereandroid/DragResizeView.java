@@ -20,6 +20,11 @@ public class DragResizeView extends View {
     private float lastX;
     private float lastY;
 
+    public void toggleFrame() {
+        Config.frameEnabled = !Config.frameEnabled;
+        invalidate();
+    }
+
     public DragResizeView(Context context) {
         super(context);
         init(context);
@@ -55,38 +60,41 @@ public class DragResizeView extends View {
     protected void onDraw(@NonNull Canvas canvas) {
         super.onDraw(canvas);
 
-        // Paint the entire canvas with 50% black
-        Paint dimPaint = new Paint();
-        dimPaint.setColor(Color.argb(128, 0, 0, 0)); // 50% black
+        if (Config.frameEnabled) {
 
-        // Draw dimming rectangles around the frame
-        // Top rectangle
-        canvas.drawRect(0, 0, getWidth(), rect.top, dimPaint);
-        // Bottom rectangle
-        canvas.drawRect(0, rect.bottom, getWidth(), getHeight(), dimPaint);
-        // Left rectangle
-        canvas.drawRect(0, rect.top, rect.left, rect.bottom, dimPaint);
-        // Right rectangle
-        canvas.drawRect(rect.right, rect.top, getWidth(), rect.bottom, dimPaint);
+            // Paint the entire canvas with 50% black
+            Paint dimPaint = new Paint();
+            dimPaint.setColor(Color.argb(128, 0, 0, 0)); // 50% black
 
-        // Draw corners of the frame
-        float cornerLength = 50; // length of the corners
+            // Draw dimming rectangles around the frame
+            // Top rectangle
+            canvas.drawRect(0, 0, getWidth(), rect.top, dimPaint);
+            // Bottom rectangle
+            canvas.drawRect(0, rect.bottom, getWidth(), getHeight(), dimPaint);
+            // Left rectangle
+            canvas.drawRect(0, rect.top, rect.left, rect.bottom, dimPaint);
+            // Right rectangle
+            canvas.drawRect(rect.right, rect.top, getWidth(), rect.bottom, dimPaint);
 
-        // top left corner
-        canvas.drawLine(rect.left, rect.top, rect.left + cornerLength, rect.top, paint);
-        canvas.drawLine(rect.left, rect.top, rect.left, rect.top + cornerLength, paint);
+            // Draw corners of the frame
+            float cornerLength = 50; // length of the corners
 
-        // top right corner
-        canvas.drawLine(rect.right, rect.top, rect.right - cornerLength, rect.top, paint);
-        canvas.drawLine(rect.right, rect.top, rect.right, rect.top + cornerLength, paint);
+            // top left corner
+            canvas.drawLine(rect.left, rect.top, rect.left + cornerLength, rect.top, paint);
+            canvas.drawLine(rect.left, rect.top, rect.left, rect.top + cornerLength, paint);
 
-        // bottom left corner
-        canvas.drawLine(rect.left, rect.bottom, rect.left + cornerLength, rect.bottom, paint);
-        canvas.drawLine(rect.left, rect.bottom, rect.left, rect.bottom - cornerLength, paint);
+            // top right corner
+            canvas.drawLine(rect.right, rect.top, rect.right - cornerLength, rect.top, paint);
+            canvas.drawLine(rect.right, rect.top, rect.right, rect.top + cornerLength, paint);
 
-        // bottom right corner
-        canvas.drawLine(rect.right, rect.bottom, rect.right - cornerLength, rect.bottom, paint);
-        canvas.drawLine(rect.right, rect.bottom, rect.right, rect.bottom - cornerLength, paint);
+            // bottom left corner
+            canvas.drawLine(rect.left, rect.bottom, rect.left + cornerLength, rect.bottom, paint);
+            canvas.drawLine(rect.left, rect.bottom, rect.left, rect.bottom - cornerLength, paint);
+
+            // bottom right corner
+            canvas.drawLine(rect.right, rect.bottom, rect.right - cornerLength, rect.bottom, paint);
+            canvas.drawLine(rect.right, rect.bottom, rect.right, rect.bottom - cornerLength, paint);
+        }
     }
 
     private void updateRect() {

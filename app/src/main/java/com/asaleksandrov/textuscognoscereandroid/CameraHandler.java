@@ -81,28 +81,22 @@ public class CameraHandler {
         String filePath = file.getAbsolutePath();
         Log.d("MyApp", "File path: " + filePath);
 
-//        RectF rect = DragResizeView.getRect(); // get the rect from DragResizeView
-//        ImageCropper imageCropper = new ImageCropper(file.toString(), context);
-//        imageCropper.cropAndSave(rect);
-
         imageCapture.takePicture(outputFileOptions, Executors.newCachedThreadPool(), new ImageCapture.OnImageSavedCallback() {
             @Override
             public void onImageSaved(@NonNull ImageCapture.OutputFileResults outputFileResults) {
-//                runOnUiThread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        Toast.makeText(MainActivity.this, "Image saved at: " + file.getPath(), Toast.LENGTH_SHORT).show();
-//                    }
-//                });
-
-                RectF rect = DragResizeView.getRect(); // get the rect from DragResizeView
-                ImageCropper imageCropper = new ImageCropper(file.toString(), context, previewView);
-                imageCropper.cropAndSave(rect);
-
                 startCamera(cameraFacing);
-
                 TesseractHandler mTesseractHandler = new TesseractHandler(Config.LANGUAGE, context, progressBar);
-                mTesseractHandler.processCroppedImage();
+
+                if (Config.frameEnabled) {
+                    // Рамка включена, обрезаем изображение
+                    RectF rect = DragResizeView.getRect(); // получаем прямоугольник из DragResizeView
+                    ImageCropper imageCropper = new ImageCropper(file.toString(), context, previewView);
+                    imageCropper.cropAndSave(rect);
+                    mTesseractHandler.processCroppedImage();
+                } else {
+                    // Рамка выключена, используем полное изображение
+                    mTesseractHandler.processFullImage();
+                }
             }
 
             @Override

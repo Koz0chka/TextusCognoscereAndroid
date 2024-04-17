@@ -33,10 +33,10 @@ public class MainActivity extends AppCompatActivity {
         ImageButton capture = findViewById(R.id.capture);
         ImageButton toggleFlash = findViewById(R.id.toggleFlash);
         FrameLayout frameLayout = findViewById(R.id.frameLayout);
+        final ProgressBar progressBar = findViewById(R.id.progressBar);
+        ImageButton btnFullscreen = findViewById(R.id.btn_fullscreen);
         DragResizeView dragResizeView = new DragResizeView(this);
         frameLayout.addView(dragResizeView);
-
-        final ProgressBar progressBar = findViewById(R.id.progressBar);
 
         // Создаем экземпляр CameraHandler
         cameraHandler = new CameraHandler(this, previewView, capture, toggleFlash, progressBar);
@@ -49,6 +49,19 @@ public class MainActivity extends AppCompatActivity {
             // Иначе запрашиваем разрешение
             requestCameraPermission();
         }
+
+        btnFullscreen.setOnClickListener(v -> {
+            dragResizeView.toggleFrame();
+
+            // Проверка состояния dragResizeView
+            if (Config.frameEnabled) {
+                // Если в полноэкранном режиме, установите иконку на icon_one
+                btnFullscreen.setImageResource(R.drawable.baseline_border_all_24);
+            } else {
+                // Если не в полноэкранном режиме, установите иконку на icon_two
+                btnFullscreen.setImageResource(R.drawable.baseline_border_clear_24);
+            }
+        });
     }
 
     private void requestCameraPermission() {

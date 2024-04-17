@@ -11,11 +11,18 @@
         android:layout_height="wrap_content"
         android:src="@android:drawable/ic_media_previous" />
 
-    <TextView
-        android:id="@+id/text_view"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textIsSelectable="true"
-        android:textSize="16sp" />
+        android:layout_height="match_parent"
+        android:layout_marginBottom="100dp"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp" />
+
+    </ScrollView>
 
 </LinearLayout>
