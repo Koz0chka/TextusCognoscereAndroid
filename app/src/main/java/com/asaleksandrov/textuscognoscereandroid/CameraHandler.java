@@ -34,6 +34,8 @@ public class CameraHandler {
     private final int cameraFacing = CameraSelector.LENS_FACING_BACK;
     private final ProgressBar progressBar;
 
+    private boolean isCaptureButtonEnabled = true;
+
     public CameraHandler(Context context, PreviewView previewView, ImageButton capture, ImageButton toggleFlash, ProgressBar progressBar) {
         this.context = context;
         this.previewView = previewView;
@@ -76,45 +78,43 @@ public class CameraHandler {
     }
 
     public void takePicture(ImageCapture imageCapture) {
-        final File file = new File(context.getExternalFilesDir(null), "image_to_process.png");
-        ImageCapture.OutputFileOptions outputFileOptions = new ImageCapture.OutputFileOptions.Builder(file).build();
-        String filePath = file.getAbsolutePath();
-        Log.d("MyApp", "File path: " + filePath);
+        if (isCaptureButtonEnabled) {
+            // Запретить дальнейшие нажатия
+            isCaptureButtonEnabled = false;
 
-        imageCapture.takePicture(outputFileOptions, Executors.newCachedThreadPool(), new ImageCapture.OnImageSavedCallback() {
-            @Override
-            public void onImageSaved(@NonNull ImageCapture.OutputFileResults outputFileResults) {
-                startCamera(cameraFacing);
-                TesseractHandler mTesseractHandler = new TesseractHandler(Config.LANGUAGE, context, progressBar);
+            final File file = new File(context.getExternalFilesDir(null), "image_to_process.png");
+            ImageCapture.OutputFileOptions outputFileOptions = new ImageCapture.OutputFileOptions.Builder(file).build();
+            String filePath = file.getAbsolutePath();
+            Log.d("MyApp", "File path: " + filePath);
 
-                if (Config.frameEnabled) {
-                    // Рамка включена, обрезаем изображение
-                    RectF rect = DragResizeView.getRect(); // получаем прямоугольник из DragResizeView
-                    ImageCropper imageCropper = new ImageCropper(file.toString(), context, previewView);
-                    imageCropper.cropAndSave(rect);
-                    mTesseractHandler.processCroppedImage();
-                } else {
-                    // Рамка выключена, используем полное изображение
-                    mTesseractHandler.processFullImage();
+            imageCapture.takePicture(outputFileOptions, Executors.newCachedThreadPool(), new ImageCapture.OnImageSavedCallback() {
+                @Override
+                public void onImageSaved(@NonNull ImageCapture.OutputFileResults outputFileResults) {
+                    startCamera(cameraFacing);
+                    TesseractHandler mTesseractHandler = new TesseractHandler(Config.LANGUAGE, context, progressBar);
+
+                    if (Config.frameEnabled) {
+                        // Рамка включена, обрезаем изображение
+                        RectF rect = DragResizeView.getRect(); // получаем прямоугольник из DragResizeView
+                        ImageCropper imageCropper = new ImageCropper(file.toString(), context, previewView);
+                        imageCropper.cropAndSave(rect);
+                        mTesseractHandler.processCroppedImage();
+                    } else {
+                        // Рамка выключена, используем полное изображение
+                        mTesseractHandler.processFullImage();
+                    }
+
+                    // После сохранения изображения включить кнопку снова
+                    isCaptureButtonEnabled = true;
                 }
-            }
 
-            @Override
-            public void onError(@NonNull ImageCaptureException exception) {
-                Toast.makeText(context, "Failed to save image: " + exception.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-
-//            @Override
-//            public void onError(@NonNull ImageCaptureException exception) {
-//                runOnUiThread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        Toast.makeText(MainActivity.this, "Failed to save: " + exception.getMessage(), Toast.LENGTH_SHORT).show();
-//                    }
-//                });
-//                startCamera(cameraFacing);
-//            }
-        });
+                @Override
+                public void onError(@NonNull ImageCaptureException exception) {
+                    Toast.makeText(context, "Failed to save image: " + exception.getMessage(), Toast.LENGTH_SHORT).show();
+                    isCaptureButtonEnabled = true;
+                }
+            });
+        }
     }
 
     private void setFlashIcon(Camera camera) {
