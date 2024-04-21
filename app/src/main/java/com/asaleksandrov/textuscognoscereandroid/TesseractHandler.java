@@ -1,12 +1,13 @@
 package com.asaleksandrov.textuscognoscereandroid;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
+import android.view.View;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.googlecode.tesseract.android.TessBaseAPI;
 
@@ -30,8 +31,8 @@ public class TesseractHandler {
         mTess.init(datapath, language);
     }
 
-    public void processCroppedImage() {
-        File croppedFile = new File(context.getExternalFilesDir(null), "CROPPED.png");
+    public void processProcessedImage(String preprocessedImagePath) {
+        File croppedFile = new File(preprocessedImagePath);
 
         if (croppedFile.exists()) {
             final String filePath = croppedFile.getAbsolutePath();
@@ -46,37 +47,13 @@ public class TesseractHandler {
                 public void onPostExecute(String result) {
                     //Log.e("result_text", result);
 
-                    // Вызов функции startTextDisplayActivity
-                    IntentHandler.startTextDisplayActivity(context, result);
-                }
-            });
-        } else {
-            Toast.makeText(context, "File does not exist", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    public void processFullImage() {
-        File croppedFile = new File(context.getExternalFilesDir(null), "image_to_process.png");
-
-        if (croppedFile.exists()) {
-            final String filePath = croppedFile.getAbsolutePath();
-
-            AnimationUtils.processImageWithLoading(progressBar, new AnimationUtils.Callback() {
-                @Override
-                public String onProcessImage() {
-                    return processImage(filePath);
-                }
-
-                @Override
-                public void onPostExecute(String result) {
-                    //Log.e("result_text", result);
+                    // Stop the progressBar
+                    ((Activity)context).runOnUiThread(() -> progressBar.setVisibility(View.GONE));
 
                     // Вызов функции startTextDisplayActivity
                     IntentHandler.startTextDisplayActivity(context, result);
                 }
             });
-        } else {
-            Toast.makeText(context, "File does not exist", Toast.LENGTH_SHORT).show();
         }
     }
 

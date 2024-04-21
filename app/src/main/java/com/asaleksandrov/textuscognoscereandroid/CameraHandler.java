@@ -82,6 +82,8 @@ public class CameraHandler {
             // Запретить дальнейшие нажатия
             isCaptureButtonEnabled = false;
 
+            File externalFilesDir = context.getCacheDir();
+
             final File file = new File(context.getExternalFilesDir(null), "image_to_process.png");
             ImageCapture.OutputFileOptions outputFileOptions = new ImageCapture.OutputFileOptions.Builder(file).build();
             String filePath = file.getAbsolutePath();
@@ -93,15 +95,30 @@ public class CameraHandler {
                     startCamera(cameraFacing);
                     TesseractHandler mTesseractHandler = new TesseractHandler(Config.LANGUAGE, context, progressBar);
 
-                    if (Config.frameEnabled) {
-                        // Рамка включена, обрезаем изображение
-                        RectF rect = DragResizeView.getRect(); // получаем прямоугольник из DragResizeView
-                        ImageCropper imageCropper = new ImageCropper(file.toString(), context, previewView);
-                        imageCropper.cropAndSave(rect);
-                        mTesseractHandler.processCroppedImage();
-                    } else {
-                        // Рамка выключена, используем полное изображение
-                        mTesseractHandler.processFullImage();
+                    if (Config.OCR_ENGINE.equals("Tesseract")) {
+                        if (Config.frameEnabled) {
+                            // Рамка включена, обрезаем изображение
+                            RectF rect = DragResizeView.getRect(); // получаем прямоугольник из DragResizeView
+                            ImageCropper imageCropper = new ImageCropper(file.toString(), context, previewView);
+                            imageCropper.cropAndSave(rect);
+                            String preprocessedImagePath = ImagePreprocessor.preprocessImage("CROPPED.png", context, progressBar);
+                            mTesseractHandler.processProcessedImage(preprocessedImagePath);
+                        } else {
+                            // Рамка выключена, используем полное изображение
+                            String preprocessedImagePath = ImagePreprocessor.preprocessImage("image_to_process.png", context, progressBar);
+                            mTesseractHandler.processProcessedImage(preprocessedImagePath);
+                        }
+
+                    } else if (Config.OCR_ENGINE.equals("EasyOCR")) {
+                        if (Config.frameEnabled) {
+                            // Рамка включена, обрезаем изображение
+                            RectF rect = DragResizeView.getRect(); // получаем прямоугольник из DragResizeView
+                            ImageCropper imageCropper = new ImageCropper(file.toString(), context, previewView);
+                            imageCropper.cropAndSave(rect);
+
+                        } else {
+                            // Рамка выключена, используем полное изображение
+                        }
                     }
 
                     // После сохранения изображения включить кнопку снова
