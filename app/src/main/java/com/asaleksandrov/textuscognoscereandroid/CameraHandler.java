@@ -82,8 +82,6 @@ public class CameraHandler {
             // Запретить дальнейшие нажатия
             isCaptureButtonEnabled = false;
 
-            File externalFilesDir = context.getCacheDir();
-
             final File file = new File(context.getExternalFilesDir(null), "image_to_process.png");
             ImageCapture.OutputFileOptions outputFileOptions = new ImageCapture.OutputFileOptions.Builder(file).build();
             String filePath = file.getAbsolutePath();
@@ -94,6 +92,7 @@ public class CameraHandler {
                 public void onImageSaved(@NonNull ImageCapture.OutputFileResults outputFileResults) {
                     startCamera(cameraFacing);
                     TesseractHandler mTesseractHandler = new TesseractHandler(Config.LANGUAGE, context, progressBar);
+                    HTTPHandler mHTTPHandler = new HTTPHandler("http://69.69.69.69:5000");
 
                     if (Config.OCR_ENGINE.equals("Tesseract")) {
                         if (Config.frameEnabled) {
@@ -109,15 +108,17 @@ public class CameraHandler {
                             mTesseractHandler.processProcessedImage(preprocessedImagePath);
                         }
 
-                    } else if (Config.OCR_ENGINE.equals("EasyOCR")) {
+                    } else {
                         if (Config.frameEnabled) {
                             // Рамка включена, обрезаем изображение
                             RectF rect = DragResizeView.getRect(); // получаем прямоугольник из DragResizeView
                             ImageCropper imageCropper = new ImageCropper(file.toString(), context, previewView);
                             imageCropper.cropAndSave(rect);
+                            mHTTPHandler.httpProcess("CROPPED.png", context, progressBar);
 
                         } else {
                             // Рамка выключена, используем полное изображение
+                            mHTTPHandler.httpProcess("image_to_process.png", context, progressBar);
                         }
                     }
 
