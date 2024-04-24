@@ -3,11 +3,15 @@ package com.asaleksandrov.textuscognoscereandroid;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.view.View;
+import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
 
     private final int cameraFacing = CameraSelector.LENS_FACING_BACK;
     private CameraHandler cameraHandler;
-    private TesseractHandler tesseractHandler;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +41,23 @@ public class MainActivity extends AppCompatActivity {
         ImageButton btnFullscreen = findViewById(R.id.btn_fullscreen);
         DragResizeView dragResizeView = new DragResizeView(this);
         frameLayout.addView(dragResizeView);
+        ImageButton menuButton = findViewById(R.id.menu_button);
+        RelativeLayout sideMenu = findViewById(R.id.side_menu);
+
+        // Новый способ обработки нажатия кнопки "Назад"
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                if (sideMenu.getVisibility() == View.VISIBLE) {
+                    // Если меню видимо, скрываем его с анимацией
+                    sideMenu.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.hide_menu));
+                    sideMenu.setVisibility(View.GONE);
+                } else {
+                    setEnabled(false);
+                    onBackPressed();
+                }
+            }
+        });
 
         // Создаем экземпляр CameraHandler
         cameraHandler = new CameraHandler(this, previewView, capture, toggleFlash, progressBar);
@@ -60,6 +81,18 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 // Если не в полноэкранном режиме, установите иконку на icon_two
                 btnFullscreen.setImageResource(R.drawable.baseline_border_clear_24);
+            }
+        });
+
+        menuButton.setOnClickListener(v -> {
+            if (sideMenu.getVisibility() == View.GONE) {
+                // Если меню невидимо, показываем его с анимацией
+                sideMenu.setVisibility(View.VISIBLE);
+                sideMenu.startAnimation(AnimationUtils.loadAnimation(this, R.anim.show_menu));
+            } else {
+                // Если меню видимо, скрываем его с анимацией
+                sideMenu.startAnimation(AnimationUtils.loadAnimation(this, R.anim.hide_menu));
+                sideMenu.setVisibility(View.GONE);
             }
         });
     }
