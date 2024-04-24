@@ -30,6 +30,9 @@
 
         <activity android:name=".TextDisplayActivity" />
 
+        <activity android:name=".AboutActivity" />
+        <activity android:name=".SettingsActivity" />
+
     </application>
 
 </manifest>

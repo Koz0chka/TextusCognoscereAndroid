@@ -119,7 +119,8 @@
                 android:id="@+id/button1"
                 android:layout_marginTop="20dp"
                 android:background="@android:color/transparent"
-                android:textColor="@android:color/white" />
+                android:textColor="@android:color/white"
+                android:gravity="left|center_vertical" />
 
             <Button
                 android:layout_below="@+id/button1"
@@ -129,7 +130,8 @@
                 android:id="@+id/button2"
                 android:layout_marginTop="20dp"
                 android:background="@android:color/transparent"
-                android:textColor="@android:color/white" />
+                android:textColor="@android:color/white"
+                android:gravity="left|center_vertical" />
 
             <Button
                 android:layout_below="@+id/button2"
@@ -139,7 +141,8 @@
                 android:id="@+id/button3"
                 android:layout_marginTop="20dp"
                 android:background="@android:color/transparent"
-                android:textColor="@android:color/white" />
+                android:textColor="@android:color/white"
+                android:gravity="left|center_vertical" />
 
         </RelativeLayout>
 

@@ -1,6 +1,7 @@
 package com.asaleksandrov.textuscognoscereandroid;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
@@ -19,9 +20,11 @@ import androidx.camera.core.CameraSelector;
 import androidx.camera.view.PreviewView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
     private static final int CAMERA_PERMISSION_CODE = 100;
+    static String selectedLanguage;
 
     private final int cameraFacing = CameraSelector.LENS_FACING_BACK;
     private CameraHandler cameraHandler;
@@ -94,6 +97,53 @@ public class MainActivity extends AppCompatActivity {
                 sideMenu.startAnimation(AnimationUtils.loadAnimation(this, R.anim.hide_menu));
                 sideMenu.setVisibility(View.GONE);
             }
+        });
+
+        // Настройки
+        Button settingsButton = findViewById(R.id.button2);
+        settingsButton.setOnClickListener(v -> {
+            Intent settingsIntent = new Intent(MainActivity.this, SettingsActivity.class);
+            startActivity(settingsIntent);
+        });
+
+        // О нас
+        Button aboutButton = findViewById(R.id.button3);
+        aboutButton.setOnClickListener(v -> {
+            Intent aboutIntent = new Intent(MainActivity.this, AboutActivity.class);
+            startActivity(aboutIntent);
+        });
+
+        Button languageButton = findViewById(R.id.button1);
+        languageButton.setOnClickListener(v -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+            builder.setTitle("Выберите язык")
+                    .setItems(new CharSequence[]{"Русский", "English", "Español", "Deutsch", "中文", "한국어", "日本語"}, (dialog, which) -> {
+                        switch (which) {
+                            case 0:
+                                MainActivity.selectedLanguage = "rus";
+                                break;
+                            case 1:
+                                MainActivity.selectedLanguage = "eng";
+                                break;
+                            case 2:
+                                MainActivity.selectedLanguage = "esp";
+                                break;
+                            case 3:
+                                MainActivity.selectedLanguage = "deu";
+                                break;
+                            case 4:
+                                MainActivity.selectedLanguage = "chi_sim";
+                                break;
+                            case 5:
+                                MainActivity.selectedLanguage = "kor";
+                                break;
+                            case 6:
+                                MainActivity.selectedLanguage = "jpn";
+                                break;
+                        }
+                    })
+                    .setNegativeButton("Отмена", null)
+                    .show();
         });
     }
 
