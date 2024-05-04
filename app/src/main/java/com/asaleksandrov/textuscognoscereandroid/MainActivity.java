@@ -24,7 +24,7 @@ import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
     private static final int CAMERA_PERMISSION_CODE = 100;
-    static String selectedLanguage;
+    public static String selectedLanguage = "rus";
 
     private final int cameraFacing = CameraSelector.LENS_FACING_BACK;
     private CameraHandler cameraHandler;

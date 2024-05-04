@@ -42,6 +42,7 @@ public class HTTPHandler {
                 .setType(MultipartBody.FORM)
                 .addFormDataPart("image", fileName,
                         RequestBody.create(new File(context.getExternalFilesDir(null), fileName), MediaType.parse("image/png")))
+                .addFormDataPart("language", Config.LANGUAGE)
                 .build();
         Request request = new Request.Builder()
                 .url(serverUrl + "/process-image") // append the endpoint to your serverUrl

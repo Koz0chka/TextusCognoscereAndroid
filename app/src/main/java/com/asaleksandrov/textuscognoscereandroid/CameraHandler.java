@@ -1,5 +1,7 @@
 package com.asaleksandrov.textuscognoscereandroid;
 
+import static com.asaleksandrov.textuscognoscereandroid.MainActivity.selectedLanguage;
+
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -91,8 +93,8 @@ public class CameraHandler {
                 @Override
                 public void onImageSaved(@NonNull ImageCapture.OutputFileResults outputFileResults) {
                     startCamera(cameraFacing);
-                    TesseractHandler mTesseractHandler = new TesseractHandler(Config.LANGUAGE, context, progressBar);
-                    HTTPHandler mHTTPHandler = new HTTPHandler("http://69.69.69.69:5000");
+                    TesseractHandler mTesseractHandler = new TesseractHandler(selectedLanguage, context, progressBar);
+                    HTTPHandler mHTTPHandler = new HTTPHandler(Config.SERVER_IP);
 
                     if (Config.OCR_ENGINE.equals("Tesseract")) {
                         if (Config.frameEnabled) {
