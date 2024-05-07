@@ -33,15 +33,15 @@ public class HTTPHandler {
         this.client = new OkHttpClient();
     }
 
-    public void httpProcess(String fileName, final Context context, final ProgressBar progressBar) {
+    public void httpProcess(String filePath, final Context context, final ProgressBar progressBar) {
         // Start the progressBar
         ((Activity)context).runOnUiThread(() -> progressBar.setVisibility(View.VISIBLE));
 
         // Create request
         RequestBody requestBody = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
-                .addFormDataPart("image", fileName,
-                        RequestBody.create(new File(context.getExternalFilesDir(null), fileName), MediaType.parse("image/png")))
+                .addFormDataPart("image", filePath,
+                        RequestBody.create(new File(filePath), MediaType.parse("image/png")))
                 .addFormDataPart("language", Config.LANGUAGE)
                 .build();
         Request request = new Request.Builder()

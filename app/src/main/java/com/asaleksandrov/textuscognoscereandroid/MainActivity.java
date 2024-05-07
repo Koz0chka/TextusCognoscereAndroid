@@ -3,7 +3,10 @@ package com.asaleksandrov.textuscognoscereandroid;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
@@ -24,11 +27,13 @@ import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
     private static final int CAMERA_PERMISSION_CODE = 100;
+    private static final int PICK_IMAGE_REQUEST_CODE = 1;
     public static String selectedLanguage = "rus";
 
     private final int cameraFacing = CameraSelector.LENS_FACING_BACK;
     private CameraHandler cameraHandler;
 
+    private OcrProcessor ocrProcessor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +70,8 @@ public class MainActivity extends AppCompatActivity {
         // Создаем экземпляр CameraHandler
         cameraHandler = new CameraHandler(this, previewView, capture, toggleFlash, progressBar);
 
+        ocrProcessor = new OcrProcessor(this, previewView, progressBar);
+
         // Проверяем разрешение на использование камеры
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
             // Если разрешение есть, запускаем камеру
@@ -97,6 +104,13 @@ public class MainActivity extends AppCompatActivity {
                 sideMenu.startAnimation(AnimationUtils.loadAnimation(this, R.anim.hide_menu));
                 sideMenu.setVisibility(View.GONE);
             }
+        });
+
+        ImageButton btnLoadImage = findViewById(R.id.btn_load_image);
+        btnLoadImage.setOnClickListener(view -> {
+            Intent intent = new Intent(Intent.ACTION_PICK);
+            intent.setType("image/*");
+            startActivityForResult(intent, PICK_IMAGE_REQUEST_CODE);
         });
 
         // Настройки
@@ -170,5 +184,28 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this, "Camera Permission DENIED", Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == PICK_IMAGE_REQUEST_CODE && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            Uri selectedImageUri = data.getData();
+            String imagePath = getPathFromUri(selectedImageUri);
+            ocrProcessor.processGalleryImage(imagePath);
+        }
+    }
+
+    public String getPathFromUri(Uri uri) {
+        String[] projection = { MediaStore.Images.Media.DATA };
+        Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
+        if (cursor != null) {
+            cursor.moveToFirst();
+            int columnIndex = cursor.getColumnIndex(projection[0]);
+            String filePath = cursor.getString(columnIndex);
+            cursor.close();
+            return filePath;
+        }
+        return null;
     }
 }

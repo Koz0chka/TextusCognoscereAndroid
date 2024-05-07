@@ -28,7 +28,7 @@
             android:layout_height="80sp"
             android:layout_centerHorizontal="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="40sp"
+            android:layout_marginBottom="80sp"
             android:id="@+id/capture"
             android:src="@drawable/baseline_do_not_disturb_on_total_silence_24"
             android:scaleType="centerCrop"
@@ -39,7 +39,7 @@
             android:layout_width="40sp"
             android:layout_height="40sp"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="60sp"
+            android:layout_marginBottom="100sp"
             android:layout_marginHorizontal="60sp"
             android:src="@drawable/baseline_flash_on_24"
             app:tint="#fff"
@@ -60,10 +60,34 @@
             android:layout_width="40sp"
             android:layout_height="40sp"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="60sp"
+            android:layout_marginBottom="100sp"
             android:layout_marginHorizontal="260sp"
             android:id="@+id/btn_fullscreen"
             android:src="@drawable/baseline_border_all_24"
+            android:scaleType="centerCrop"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:tint="#fff" />
+
+        <ImageButton
+            android:layout_width="20sp"
+            android:layout_height="20sp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="30sp"
+            android:layout_marginHorizontal="120sp"
+            android:id="@+id/btn_load_image"
+            android:src="@drawable/baseline_filter_24"
+            android:scaleType="centerCrop"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:tint="#fff" />
+
+        <ImageButton
+            android:layout_width="20sp"
+            android:layout_height="20sp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="30sp"
+            android:layout_marginHorizontal="220sp"
+            android:id="@+id/btn_history"
+            android:src="@drawable/baseline_history_24"
             android:scaleType="centerCrop"
             android:background="?attr/selectableItemBackgroundBorderless"
             app:tint="#fff" />
