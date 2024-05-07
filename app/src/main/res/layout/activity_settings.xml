@@ -4,12 +4,22 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <ImageButton
+        android:id="@+id/back_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@android:drawable/ic_media_previous" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Настройки"
         android:textSize="24sp" />
 
-    <!-- Ваш код здесь... -->
+    <Button
+        android:id="@+id/button_choose"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Выбрать OCR" />
 
 </LinearLayout>

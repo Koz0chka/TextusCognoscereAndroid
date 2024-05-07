@@ -1,6 +1,7 @@
 package com.asaleksandrov.textuscognoscereandroid;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -8,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
+import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -23,6 +25,8 @@ import androidx.camera.core.CameraSelector;
 import androidx.camera.view.PreviewView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+
 import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
@@ -35,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
     private OcrProcessor ocrProcessor;
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
         frameLayout.addView(dragResizeView);
         ImageButton menuButton = findViewById(R.id.menu_button);
         RelativeLayout sideMenu = findViewById(R.id.side_menu);
+        final DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
 
         // Новый способ обработки нажатия кнопки "Назад"
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
@@ -65,6 +71,20 @@ public class MainActivity extends AppCompatActivity {
                     onBackPressed();
                 }
             }
+        });
+
+        drawerLayout.setOnTouchListener((v, event) -> {
+            if (sideMenu.getVisibility() == View.VISIBLE) {
+                if (event.getX() < sideMenu.getWidth()) {
+                    return false;
+                }
+
+                Animation hideMenuAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.hide_menu);
+                sideMenu.startAnimation(hideMenuAnimation);
+                sideMenu.setVisibility(View.GONE);
+                v.performClick();
+            }
+            return false;
         });
 
         // Создаем экземпляр CameraHandler
@@ -139,21 +159,21 @@ public class MainActivity extends AppCompatActivity {
                             case 1:
                                 MainActivity.selectedLanguage = "eng";
                                 break;
-                            case 2:
-                                MainActivity.selectedLanguage = "esp";
-                                break;
-                            case 3:
-                                MainActivity.selectedLanguage = "deu";
-                                break;
-                            case 4:
-                                MainActivity.selectedLanguage = "chi_sim";
-                                break;
-                            case 5:
-                                MainActivity.selectedLanguage = "kor";
-                                break;
-                            case 6:
-                                MainActivity.selectedLanguage = "jpn";
-                                break;
+//                            case 2:
+//                                MainActivity.selectedLanguage = "esp";
+//                                break;
+//                            case 3:
+//                                MainActivity.selectedLanguage = "deu";
+//                                break;
+//                            case 4:
+//                                MainActivity.selectedLanguage = "chi_sim";
+//                                break;
+//                            case 5:
+//                                MainActivity.selectedLanguage = "kor";
+//                                break;
+//                            case 6:
+//                                MainActivity.selectedLanguage = "jpn";
+//                                break;
                         }
                     })
                     .setNegativeButton("Отмена", null)

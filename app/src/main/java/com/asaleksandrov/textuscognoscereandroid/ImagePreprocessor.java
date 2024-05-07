@@ -20,7 +20,7 @@ public class ImagePreprocessor {
         // Start the progressBar
         ((Activity)context).runOnUiThread(() -> progressBar.setVisibility(View.VISIBLE));
 
-        File picture = new File(context.getExternalFilesDir(null), imagePath);
+        File picture = new File(imagePath);
         Mat img = Imgcodecs.imread(picture.getPath());
 
         // Increasing the image size

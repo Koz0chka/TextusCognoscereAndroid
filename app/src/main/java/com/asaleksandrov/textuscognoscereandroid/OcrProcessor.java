@@ -27,8 +27,10 @@ public class OcrProcessor {
     public void processImage(String imagePath, RectF frame, String ocrEngine) {
         TesseractHandler mTesseractHandler = new TesseractHandler(selectedLanguage, context, progressBar);
         HTTPHandler mHTTPHandler = new HTTPHandler(Config.SERVER_IP);
+
         String cropped = String.valueOf(new File(context.getExternalFilesDir(null), "CROPPED.png"));
         String image_to_process = String.valueOf(new File(context.getExternalFilesDir(null), "image_to_process.png"));
+
         if (ocrEngine.equals("Tesseract")) {
             if (frame != null) {
                 // Рамка включена, обрезаем изображение
