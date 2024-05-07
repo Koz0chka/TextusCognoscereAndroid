@@ -24,15 +24,18 @@ public class ImageCropper {
         float scaleX = (float) previewView.getMeasuredWidth() / originalBitmap.getWidth();
         float scaleY = (float) previewView.getMeasuredHeight() / originalBitmap.getHeight();
         // Создание нового Bitmap с требуемым размером
-        this.bitmap = Bitmap.createScaledBitmap(originalBitmap, (int)(originalBitmap.getWidth() * scaleX), (int)(originalBitmap.getHeight() * scaleY), true);
+        this.bitmap = Bitmap.createScaledBitmap(originalBitmap, (int) (originalBitmap.getWidth() * scaleX), (int) (originalBitmap.getHeight() * scaleY), true);
     }
 
     public void cropAndSave(RectF rect) {
+        // Define the margins you want to crop from left and right sides
+        int leftMargin = (int) (rect.width() * 0.16);
+        int rightMargin = (int) (rect.width() * 0.16);
 
         // Определение размеров и положения прямоугольника в Bitmap
-        int width = (int) rect.width();
+        int width = (int) rect.width() - leftMargin - rightMargin;
         int height = (int) rect.height();
-        int x = (int) rect.left;
+        int x = (int) rect.left + leftMargin;
         int y = (int) rect.top;
 
         // Убедитесь, что прямоугольник не выходит за пределы Bitmap
