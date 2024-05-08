@@ -155,24 +155,31 @@ public class MainActivity extends AppCompatActivity {
                         switch (which) {
                             case 0:
                                 MainActivity.selectedLanguage = "rus";
+                                languageButton.setText("Язык распознавания: Русский");
                                 break;
                             case 1:
                                 MainActivity.selectedLanguage = "eng";
+                                languageButton.setText("Язык распознавания: English");
                                 break;
 //                            case 2:
 //                                MainActivity.selectedLanguage = "esp";
+//                                languageButton.setText("Язык распознавания: Español");
 //                                break;
 //                            case 3:
 //                                MainActivity.selectedLanguage = "deu";
+//                                languageButton.setText("Язык распознавания: Deutsch");
 //                                break;
 //                            case 4:
 //                                MainActivity.selectedLanguage = "chi_sim";
+//                                languageButton.setText("Язык распознавания: 中文");
 //                                break;
 //                            case 5:
 //                                MainActivity.selectedLanguage = "kor";
+//                                languageButton.setText("Язык распознавания: 한국어");
 //                                break;
 //                            case 6:
 //                                MainActivity.selectedLanguage = "jpn";
+//                                languageButton.setText("Язык распознавания: 日本語");
 //                                break;
                         }
                     })

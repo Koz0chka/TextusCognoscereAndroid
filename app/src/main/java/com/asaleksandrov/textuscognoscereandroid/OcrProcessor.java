@@ -48,10 +48,12 @@ public class OcrProcessor {
                 // Рамка включена, обрезаем изображение
                 ImageCropper imageCropper = new ImageCropper(imagePath, context, previewView);
                 imageCropper.cropAndSave(frame);
-                mHTTPHandler.httpProcess(cropped, context, progressBar);
+                String preprocessedImagePath = ImagePreprocessor.preprocessImage(cropped, context, progressBar);
+                mHTTPHandler.httpProcess(preprocessedImagePath, context, progressBar);
             } else {
                 // Рамка выключена, используем полное изображение
-                mHTTPHandler.httpProcess(image_to_process, context, progressBar);
+                String preprocessedImagePath = ImagePreprocessor.preprocessImage(image_to_process, context, progressBar);
+                mHTTPHandler.httpProcess(preprocessedImagePath, context, progressBar);
             }
         }
     }
@@ -60,10 +62,11 @@ public class OcrProcessor {
         String imagePath = getPathFromUri(context, Uri.parse(selectedImageUri));
         TesseractHandler mTesseractHandler = new TesseractHandler(selectedLanguage, context, progressBar);
         HTTPHandler mHTTPHandler = new HTTPHandler(Config.SERVER_IP);
+        String preprocessedImagePath = ImagePreprocessor.preprocessImage(imagePath, context, progressBar);
         if (Config.OCR_ENGINE.equals("Tesseract")) {
-            mTesseractHandler.processProcessedImage(imagePath);
+            mTesseractHandler.processProcessedImage(preprocessedImagePath);
         } else {
-            mHTTPHandler.httpProcess(imagePath, context, progressBar);
+            mHTTPHandler.httpProcess(preprocessedImagePath, context, progressBar);
         }
     }
 
