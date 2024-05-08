@@ -4,12 +4,22 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <ImageButton
+        android:id="@+id/back_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@android:drawable/ic_media_previous" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="О нас"
         android:textSize="24sp" />
 
-    <!-- Ваш код здесь... -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="\nПриложение сделано студентом РТУ МИРЭА второго курса группы БФБО-02-22 Александровым А.С."
+        android:textSize="24sp" />
 
 </LinearLayout>
