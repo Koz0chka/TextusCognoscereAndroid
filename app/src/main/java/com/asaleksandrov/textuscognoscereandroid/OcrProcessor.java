@@ -1,7 +1,5 @@
 package com.asaleksandrov.textuscognoscereandroid;
 
-import static com.asaleksandrov.textuscognoscereandroid.MainActivity.selectedLanguage;
-
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.RectF;
@@ -25,7 +23,7 @@ public class OcrProcessor {
     }
 
     public void processImage(String imagePath, RectF frame, String ocrEngine) {
-        TesseractHandler mTesseractHandler = new TesseractHandler(selectedLanguage, context, progressBar);
+        TesseractHandler mTesseractHandler = new TesseractHandler(Config.LANGUAGE, context, progressBar);
         HTTPHandler mHTTPHandler = new HTTPHandler(Config.SERVER_IP);
 
         String cropped = String.valueOf(new File(context.getExternalFilesDir(null), "CROPPED.png"));
@@ -60,7 +58,7 @@ public class OcrProcessor {
 
     void processGalleryImage(String selectedImageUri) {
         String imagePath = getPathFromUri(context, Uri.parse(selectedImageUri));
-        TesseractHandler mTesseractHandler = new TesseractHandler(selectedLanguage, context, progressBar);
+        TesseractHandler mTesseractHandler = new TesseractHandler(Config.LANGUAGE, context, progressBar);
         HTTPHandler mHTTPHandler = new HTTPHandler(Config.SERVER_IP);
         String preprocessedImagePath = ImagePreprocessor.preprocessImage(imagePath, context, progressBar);
         if (Config.OCR_ENGINE.equals("Tesseract")) {
