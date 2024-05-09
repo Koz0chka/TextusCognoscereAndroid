@@ -7,5 +7,5 @@ public class Config {
     public static boolean frameEnabled = true;
     public static String OCR_ENGINE = "Tesseract"; //Tesseract EasyOCR
 
-    public static final String SERVER_IP = "http://192.168.0.189:5000";
+    public static final String SERVER_IP = "http://Koz0chka.pythonanywhere.com";
 }

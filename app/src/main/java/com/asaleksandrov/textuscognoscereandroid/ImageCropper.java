@@ -28,14 +28,11 @@ public class ImageCropper {
     }
 
     public void cropAndSave(RectF rect) {
-        // Define the margins you want to crop from left and right sides
-        int leftMargin = (int) (rect.width() * 0.16);
-        int rightMargin = (int) (rect.width() * 0.16);
 
         // Определение размеров и положения прямоугольника в Bitmap
-        int width = (int) rect.width() - leftMargin - rightMargin;
+        int width = (int) rect.width();
         int height = (int) rect.height();
-        int x = (int) rect.left + leftMargin;
+        int x = (int) rect.left;
         int y = (int) rect.top;
 
         // Убедитесь, что прямоугольник не выходит за пределы Bitmap

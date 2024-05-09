@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.RectF;
 import android.util.Log;
+import android.util.Size;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -50,13 +51,18 @@ public class CameraHandler {
             return;
         }
 
+        int width = previewView.getWidth();
+        int height = previewView.getHeight();
+
         ListenableFuture<ProcessCameraProvider> cameraProviderFuture = ProcessCameraProvider.getInstance(context);
         cameraProviderFuture.addListener(() -> {
             try {
                 ProcessCameraProvider cameraProvider = cameraProviderFuture.get();
 
                 Preview preview = new Preview.Builder().build();
-                ImageCapture imageCapture = new ImageCapture.Builder().build();
+                ImageCapture imageCapture = new ImageCapture.Builder()
+                        .setTargetResolution(new Size(width, height))
+                        .build();
 
                 CameraSelector cameraSelector = new CameraSelector.Builder()
                         .requireLensFacing(cameraFacing)
